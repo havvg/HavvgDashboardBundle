@@ -114,7 +114,10 @@ class TwigRenderer implements RendererInterface
      */
     protected function getBoardletBlockName(BoardletInterface $boardlet)
     {
-        return 'boardlet_'.strtolower($boardlet->getName());
+        $results = array();
+        preg_match_all('/[A-Z][^A-Z]*/', $boardlet->getName(), $results);
+
+        return 'boardlet_'.strtolower(implode('_', $results[0]));
     }
 
     /**
