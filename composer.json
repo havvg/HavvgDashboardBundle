@@ -1,0 +1,28 @@
+{
+    "name": "havvg/dashboard-bundle",
+    "description": "A Symfony2 bundle providing a simple unification for dashboards.",
+    "keywords": [ "dashboard" ],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Toni Uebernickel",
+            "email": "tuebernickel@gmail.com"
+        }
+    ],
+    "require": {
+        "havvg/dry-bundle": "1.0.*",
+        "twig/twig": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Havvg\\Bundle\\DashboardBundle": ""
+        }
+    },
+    "target-dir": "Havvg/Bundle/DashboardBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
