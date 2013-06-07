@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "havvg/dry-bundle": "1.0.*",
+        "havvg/dry-bundle": ">1.0,<3.0",
         "twig/twig": "1.*"
     },
     "autoload": {
