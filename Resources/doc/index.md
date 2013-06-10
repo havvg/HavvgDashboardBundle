@@ -1,5 +1,9 @@
 # HavvgDashboardBundle
 
+* [Configuration](configuration.md)
+* [DependencyInjection](dependency-injection.md)
+* [Twig](twig.md)
+
 ## What's a Dashboard?
 
 A `Dashboard`, by definition of this bundle, is a collection of `Boardlets`.

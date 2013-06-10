@@ -1,0 +1,5 @@
+services:
+    havvg_dashboard.renderer.twig:
+        class: Havvg\Bundle\DashboardBundle\Dashboard\Renderer\TwigRenderer
+        tags:
+            - { name: 'twig.extension' }

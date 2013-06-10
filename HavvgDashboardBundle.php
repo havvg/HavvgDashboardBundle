@@ -13,8 +13,6 @@ class HavvgDashboardBundle extends Bundle
     {
         parent::build($container);
 
-        if (class_exists('Havvg\Bundle\DRYBundle\DependencyInjection\Compiler\AbstractTaggedMapCompilerPass')) {
-            $container->addCompilerPass(new DashboardPass());
-        }
+        $container->addCompilerPass(new DashboardPass());
     }
 }

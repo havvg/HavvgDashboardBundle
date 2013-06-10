@@ -2,41 +2,32 @@
 
 namespace Havvg\Bundle\DashboardBundle\Dashboard\Renderer;
 
-use Twig_Environment;
-use Twig_Template;
-
 use Havvg\Bundle\DashboardBundle\Dashboard\Boardlet\BoardletInterface;
 
 use Havvg\Bundle\DashboardBundle\Exception\Renderer\ConfigurationException;
 use Havvg\Bundle\DashboardBundle\Exception\Renderer\LogicException;
 
-class TwigRenderer implements RendererInterface
+use Havvg\Bundle\DRYBundle\Twig\Extension\ExtensionTrait;
+
+class TwigRenderer implements RendererInterface, \Twig_ExtensionInterface
 {
+    use ExtensionTrait;
+
     const OPTION_TEMPLATE = 'template';
     const OPTION_DEFAULT_BLOCK = 'default_block';
 
     /**
-     * @var Twig_Environment
+     * @var \Twig_Environment
      */
     protected $twig;
 
     /**
-     * @var Twig_Template
+     * @var \Twig_Template
      */
     protected $template;
 
     protected $options = array();
     protected $hasDefaultBlock = false;
-
-    /**
-     * Constructor.
-     *
-     * @param Twig_Environment $twig A pre-configured Twig environment.
-     */
-    public function __construct(Twig_Environment $twig)
-    {
-        $this->twig = $twig;
-    }
 
     /**
      * Configure this renderer.
@@ -58,14 +49,8 @@ class TwigRenderer implements RendererInterface
         }
 
         $this->template = $options[self::OPTION_TEMPLATE];
-        if (!$this->template instanceof Twig_Template) {
-            $this->template = $this->twig->loadTemplate($this->template);
-        }
-
         $this->hasDefaultBlock = isset($options[self::OPTION_DEFAULT_BLOCK]);
-        if ($this->hasDefaultBlock and !$this->template->hasBlock($options[self::OPTION_DEFAULT_BLOCK])) {
-            throw new ConfigurationException('The default block is not part of the template.');
-        }
+        $this->verifyDefaultBlock();
 
         $this->options = $options;
 
@@ -140,5 +125,34 @@ class TwigRenderer implements RendererInterface
         }
 
         throw new LogicException('Neither the boardlet specific block nor a default block could be found.');
+    }
+
+    protected function verifyDefaultBlock()
+    {
+        if ($this->hasDefaultBlock and $this->template instanceof \Twig_Template and !$this->template->hasBlock($this->options[self::OPTION_DEFAULT_BLOCK])) {
+            throw new ConfigurationException('The default block is not part of the template.');
+        }
+    }
+
+    public function initRuntime(\Twig_Environment $environment)
+    {
+        $this->twig = $environment;
+
+        if (!$this->template instanceof \Twig_Template) {
+            $this->template = $this->twig->loadTemplate($this->template);
+            $this->verifyDefaultBlock();
+        }
+    }
+
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction('havvg_dashboard_render', array($this, 'render'), array('is_safe' => array('html'))),
+        );
+    }
+
+    public function getName()
+    {
+        return 'havvg_dashboard';
     }
 }

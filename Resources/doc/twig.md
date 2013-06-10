@@ -1,31 +1,5 @@
 # Twig
 
-## Services
-
-To make use of the `TwigRenderer` the `DashboardExtension` needs to be loaded:
-
-```yaml
-services:
-    havvg_dashboard.renderer.twig:
-        class: Havvg\Bundle\DashboardBundle\Dashboard\Renderer\TwigRenderer
-        arguments:
-            - '@twig'
-        calls:
-            -
-                - 'configure'
-                -
-                    -
-                        template: '::boardlets.html.twig'
-                        default_block: 'boardlet_default'
-
-    havvg_dashboard.twig.extension:
-        class: Havvg\Bundle\DashboardBundle\Twig\DashboardExtension
-        arguments:
-            - '@havvg_dashboard.renderer.twig'
-        tags:
-            - { name: 'twig.extension' }
-```
-
 The `DashboardExtension` adds a `havvg_dashboard_render` function to Twig.
 The first argument of this function is a `Boardlet` to render,
 the second optional argument is a list of additional options being passed to the block being rendered.
@@ -85,3 +59,5 @@ class DashboardController extends AbstractController
     {{ havvg_dashboard_render(boardlet) }}
 {% endfor %}
 ```
+
+[Back to the index](index.md)
